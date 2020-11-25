@@ -3,18 +3,13 @@
 </template>
 
 <script>
-import * as neurons from "./neurons.js";
-import NeuronStore from "../../store/NeuronStore.js";
+import neurons from "./neurons.js";
+import NeuronStore from "@/store/NeuronStore.js";
 
 export default {
   data() {
     return {
-      camera: null,
-      scene: null,
-      renderer: null,
-      mesh: null,
       NeuronStore,
-      neuron: [],
       time: NeuronStore.getTime()
     };
   },
@@ -43,48 +38,44 @@ export default {
     },
 
     processData(dat) {
-      var allTextLines = dat.split(/\r\n|\n/);
-
-      for (var i = 0; i < allTextLines.length; i++) {
-        var data = allTextLines[i].split(" ");
-        var tarr = [];
-        for (var j = 0; j < data.length; j++) {
-          tarr.push(parseFloat(data[j]));
-        }
-        this.neuron.push(tarr);
+      const allTextLines = dat.split(/\r\n|\n/);
+      const data = new Array();
+      for (var i = 0; i < allTextLines.length - 1; i++) {
+        let d = allTextLines[i].split(" ");
+        let x = parseInt(d[0]);
+        let y = parseInt(d[1]);
+        let time = parseInt(d[2]);
+        let count = parseFloat(d[3]);
+        if (isNaN(x) || isNaN(y)) return;
+        data.push([x, y, time, count]);
       }
-      NeuronStore.addPopulation(this.neuron);
-      console.log(NeuronStore.state.populations);
-      this.neuron = [];
-      console.log(
-        "x: " +
-          NeuronStore.state.populations[0][0][0] +
-          " y: " +
-          NeuronStore.state.populations[0][0][1] +
-          " Time: " +
-          NeuronStore.state.populations[0][0][2] +
-          "ms Spike Count: " +
-          NeuronStore.state.populations[0][0][3]
-      );
-      NeuronStore.state.count++;
-      setInterval(function() {
-        NeuronStore.changeTime();
-        this.time = NeuronStore.getTime();
-      }, 10000);
+      const x = 40,
+        y = 40;
+      const population = neurons.createPopulation(x, y);
+      const pos = population.children.map(neuron => {
+        const p = neuron.userData.pos;
+        return `${p.x},${p.y}`;
+      });
+      data.map(d => {
+        const neuronIdx = pos.indexOf(`${d[0]},${d[1]}`);
+        if (neuronIdx != -1 && neuronIdx < population.children.length) {
+          const neuron = population.children[neuronIdx];
+          neuron.userData.times.push(d[2]);
+          neuron.userData.count.push(d[3]);
+        }
+      });
     },
 
     addFile(e) {
       this.handleFiles(e.dataTransfer.files);
-
-    },
+    }
   },
 
   mounted() {
-
-    const context = neurons.createNeuronVis(document.getElementById("three"));
-    context.init();
-    context.animate();
-  },
+    neurons.init("three");
+    neurons.animate();
+    setInterval(() => NeuronStore.changeTime(), 100);
+  }
 };
 </script>
 
@@ -96,5 +87,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#three {
+  overflow: hidden;
 }
 </style>

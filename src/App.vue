@@ -7,16 +7,16 @@
 </template>
 
 <script>
-import SpacialOverview from "./components/SpacialOverview/SpacialOverview.vue";
-import TimeOverview from "./components/TimeOverview/TimeOverview.vue";
-import ThreeVis from "./components/ThreeVis/ThreeVis.vue";
+import SpacialOverview from "@/components/SpacialOverview/SpacialOverview.vue";
+import TimeOverview from "@/components/TimeOverview/TimeOverview.vue";
+import ThreeVis from "@/components/ThreeVis/ThreeVis.vue";
 
 export default {
   components: {
     SpacialOverview,
     TimeOverview,
-    ThreeVis,
-  },
+    ThreeVis
+  }
 };
 </script>
 
@@ -31,17 +31,15 @@ export default {
     "Time-Overview Time-Overview Time-Overview Time-Overview";
 }
 
-.Time-Overview { 
+.Time-Overview {
   grid-area: Time-Overview;
+}
 
+.Spacial-Overview {
+  grid-area: Spacial-Overview;
+}
 
- }
-
-.Spacial-Overview { grid-area: Spacial-Overview;
- }
-
-.Vis { grid-area: Vis;
- }
-
-
+.Vis {
+  grid-area: Vis;
+}
 </style>
