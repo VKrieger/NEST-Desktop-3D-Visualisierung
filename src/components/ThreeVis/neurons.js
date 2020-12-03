@@ -3,168 +3,166 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import NeuronStore from "../../store/NeuronStore.js";
 
-// passed in container id within which this animation will be shown
-export function createNeuronVis(container) {
-  var ctx = new Object();
-  (ctx.init = function init() {
-    ctx.container = container;
-    ctx.camera = new THREE.PerspectiveCamera(
-      60,
-      ctx.container.clientWidth / ctx.container.clientHeight,
-      0.1,
-      1000
-    );
-    ctx.camera.position.x = -100;
-    ctx.camera.position.y = 100;
+const colors = [
+  0xf500f5,
+  0x0d0bf5,
+  0xe01200,
+  0x00f535,
+  0x15cfe0,
+  0xf56f09,
+  0xe0ad0a,
+  0xe0768b,
+];
 
-    ctx.scene = new THREE.Scene();
+let container,
+  stats,
+  clock,
+  delta = 0;
+let scene, camera, renderer;
+let populations;
+let renderedTime = 0;
 
-    // Create Neuron Forms //
-    function createNeuron() {
-      //   let currentTime = NeuronStore.state.currentTime;
-      //   let setColor = 0x980000;
-      //   const population1 = NeuronStore.state.populations[0];
-      //   for (let k = 0; k < population1.length; k++) {
+const fps = 30; // frames per seconds
 
-      //         if (
-      //           population1[k][2] === currentTime
-      //         ) {
-      //           const geometry = new THREE.BoxGeometry(1, 0, 1);
-      //           const material = new THREE.MeshLambertMaterial({
-      //             transparent: false,
-      //             visible: true,
-      //             color: setColor,
-      //           });
-      //           ctx.neuron = new THREE.Mesh(geometry, material);
-      //           ctx.neuron.position.set(population1[k][0], 0, population1[k][1]);
-      //           ctx.scene.add(ctx.neuron);
-      //     }
-      //   }
+function init(containerId) {
+  container = document.getElementById(containerId);
 
-      let setColor = 0x980000;
-      ctx.timeArray = new Array();
-      for (let i = 0; i < 40; i++) {
-        for (let j = 0; j < 40; j++) {
-          const geometry = new THREE.BoxGeometry(1, 1, 1);
-          const material = new THREE.MeshLambertMaterial({
-            transparent: false,
-            visible: false,
-            color: setColor,
-          });
-          ctx.neuron = new THREE.Mesh(geometry, material);
-          ctx.neuron.position.set(i, 0, j);
-          ctx.scene.add(ctx.neuron);
-        }
-      }
+  camera = new THREE.PerspectiveCamera(
+    100,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    1000
+  );
+  camera.position.set(100, 100, 0);
 
-      //     let currentTime = 8;
-      //         const population1 = NeuronStore.state.populations;
-      // for (let i = 0; i < population1.length; i++) {
-      //   for (let j = 0; j < ctx.scene.children.length; j++) {
-      //     if (
-      //       population1[i][2] === currentTime &&
-      //       ctx.scene.children[j].position.x === population1[i][0] &&
-      //       ctx.scene.children[j].position.z === population1[i][1]
-      //     ) {
-      //       ctx.scene.children[j].visible = true;
-      //     } else {
-      //         ctx.scene.children[j].visible = false;
-      //     }
-      //   }
-      // }
-    }
+  clock = new THREE.Clock();
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color();
 
-    createNeuron();
+  /////////////////////////////
 
-    /////////////////////////////
+  const ambientLight = new THREE.AmbientLight();
+  scene.add(ambientLight);
 
-    ctx.ambientLight = new THREE.AmbientLight();
-    ctx.scene.add(ctx.ambientLight);
-    ctx.directionalLight = new THREE.DirectionalLight();
-    ctx.directionalLight.position.x = 0;
-    ctx.directionalLight.position.y = 80;
-    ctx.directionalLight.position.z = 10;
-    ctx.scene.add(ctx.directionalLight);
+  // const directionalLight = new THREE.DirectionalLight();
+  // directionalLight.position.x = 100;
+  // directionalLight.position.y = 80;
+  // directionalLight.position.z = 10;
+  // scene.add(directionalLight);
 
-    ctx.scene.background = new THREE.Color();
+  const grid1 = new THREE.GridHelper(80, 40);
+  grid1.position.set(0, 0, 0);
+  scene.add(grid1);
 
-    ctx.axes = new THREE.AxesHelper(5);
-    ctx.scene.add(ctx.axes);
+  const axes = new THREE.AxesHelper(5);
+  scene.add(axes);
 
-    ctx.renderer = new THREE.WebGLRenderer({ antialias: true });
-    ctx.renderer.setSize(ctx.container.clientWidth, ctx.container.clientHeight);
-    ctx.container.appendChild(ctx.renderer.domElement);
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+  new OrbitControls(camera, renderer.domElement);
 
-    ctx.orbitControls = new OrbitControls(ctx.camera, ctx.renderer.domElement);
+  populations = new THREE.Group();
+  scene.add(populations);
 
-    ctx.stats = new Stats();
-    document.body.appendChild(ctx.stats.dom);
-
-    ctx.grid1 = new THREE.GridHelper(80, 40);
-    ctx.grid1.position.set(-0.5, -0.5, -0.5);
-    ctx.scene.add(ctx.grid1);
-  }),
-    //   ctx.updateNeurons = function updateNeurons() {
-    //     console.log(ctx.scene);
-    //     const population1 = NeuronStore.state.populations[0];
-    //     const sceneChildren = ctx.scene.children;
-    //     for (let i = 0; i < population1.length - 3; i++) {
-    //         console.log(population1.length);
-    //       for (let j = 0; j < sceneChildren.length; j++) {
-    //         if (
-    //           population1[i][2] === NeuronStore.getTime() &&
-    //           sceneChildren[j].position.x === population1[i][0] &&
-    //           sceneChildren[j].position.z === population1[i][1]
-    //         ) {
-    //           sceneChildren[j].visible = true;
-    //         } else {
-    //            sceneChildren[j].visible = false;
-    //         }
-    //       }
-    //     }
-    //   },
-
-    (ctx.animate = function animate() {
-        
-      requestAnimationFrame(animate);
-      if (NeuronStore.state.count > 0) {
-
-        // const sceneChildren = ctx.scene.children;
-        const population1 = NeuronStore.state.populations[0];
-        // for (let i = 0; i < population1.length; i++) {
-        //   if (population1[i][2] === 8) {
-        //         ctx.timeArray.push(population1[i]);
-        //   }
-
-
-        //   for (let i = 0; i < 40; i++) {
-        //     for (let j = 0; j < 40; j++) {
-        //         if (
-        //             (sceneChildren[j].position.x === population1[i][0]) &&
-        //             (sceneChildren[j].position.z === population1[i][1])
-        //           ) {
-        //             sceneChildren[j].visible = true;
-        //           } else {
-        //             sceneChildren[j].visible = false;
-        //           }
-        //         }
-        //     }
-        // }
-
-          for (let i = 0; i < population1.length; i++) {
-              if(population1[i][2] === 20){
-                 const geometry = new THREE.BoxGeometry(1, population1[i][3] / 50, 1);
-                  const material = new THREE.MeshBasicMaterial({ transparent: true,visible: true, color: 0x980000 });
-                  ctx.neuron = new THREE.Mesh(geometry, material);
-                  ctx.neuron.position.set(population1[i][0], population1[i][3] / 100, population1[i][1]);
-                  ctx.scene.add(ctx.neuron);
-            }
-          }
-        cancelAnimationFrame(animate);
-      }
-      ctx.renderer.render(ctx.scene, ctx.camera);
-      ctx.stats.update();
-    });
-
-  return ctx;
+  stats = new Stats();
+  container.appendChild(stats.dom);
 }
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const interval = 1 / fps;
+  delta += clock.getDelta();
+  if (delta > interval) {
+    stats.begin();
+    render();
+    stats.end();
+    delta = delta % interval;
+  }
+  // stats.update();
+}
+
+function render() {
+  const t = NeuronStore.state.currentTime;
+  if (renderedTime != t) {
+    populations.children.forEach((population) => {
+      population.children.forEach((neuron) => {
+        neuron.visible = neuron.userData.times.includes(t);
+        if (neuron.visible) {
+          const y =
+            neuron.userData.count[neuron.userData.times.indexOf(t)] / 300;
+          neuron.scale.y = y;
+          neuron.position.y = neuron.scale.y / 2;
+        }
+      });
+    });
+    renderedTime = t;
+  }
+  renderer.render(scene, camera);
+}
+// Create Neuron Forms //
+function createPopulation(x, y) {
+  const pop = new THREE.Group();
+
+  const popIdx = populations.children.length;
+
+  const material = new THREE.MeshLambertMaterial({
+    transparent: false,
+    visible: true,
+    color: colors[popIdx],
+  });
+  let neuron;
+  for (let i = 0; i < x; i++) {
+    for (let j = 0; j < y; j++) {
+      const geometry = new THREE.BoxGeometry(1.5, 1, 1.5);
+      neuron = new THREE.Mesh(geometry, material);
+      neuron.position.set(i * 2 - x + 1, 1 / 2, j * 2 - y + 1);
+      neuron.userData = {
+        pos: {
+          x: i,
+          y: j,
+        },
+        times: [],
+        count: [],
+      };
+      pop.add(neuron);
+      pop.userData = { popIdx };
+    }
+  }
+
+  if (popIdx > 0) {
+    if (popIdx === 1) {
+      scene.add(scene.children[1].clone().translateZ(popIdx * -(2 * y + 10)));
+      pop.translateZ(popIdx * -(2 * y + 10));
+    } else if (popIdx % 2 != 0) {
+      scene.add(
+        scene.children[1]
+          .clone()
+          .translateX((popIdx - 1) * (x + 5))
+          .translateZ(-(2 * y + 10))
+      );
+      pop.translateZ(-(2 * y + 10));
+      pop.translateX((popIdx - 1) * (x + 5));
+    } else {
+      scene.add(scene.children[1].clone().translateX(popIdx * (x + 5)));
+      pop.translateX(popIdx * (x + 5));
+    }
+  }
+  populations.add(pop);
+  return pop;
+}
+
+function onWindowResize() {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  render();
+}
+
+export default {
+  init,
+  animate,
+  createPopulation,
+  onWindowResize,
+};

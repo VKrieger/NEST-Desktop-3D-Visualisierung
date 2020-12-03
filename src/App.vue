@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import SpacialOverview from "./components/SpacialOverview/SpacialOverview.vue";
-import TimeOverview from "./components/TimeOverview/TimeOverview.vue";
-import ThreeVis from "./components/ThreeVis/ThreeVis.vue";
+import SpacialOverview from "@/components/SpacialOverview/SpacialOverview.vue";
+import TimeOverview from "@/components/TimeOverview/TimeOverview.vue";
+import ThreeVis from "@/components/ThreeVis/ThreeVis.vue";
 
 export default {
   components: {
@@ -22,26 +22,30 @@ export default {
 
 <style>
 .grid-container {
-  display: grid;
-  grid-template-columns: 0.5fr 1.5fr;
-  grid-template-rows: 550px 0.5fr;
-  grid-template-areas:
-    "Spacial-Overview Vis Vis Vis"
-    "Spacial-Overview Vis Vis Vis"
-    "Time-Overview Time-Overview Time-Overview Time-Overview";
+  box-sizing: border-box;
 }
 
-.Time-Overview { 
-  grid-area: Time-Overview;
+.Spacial-Overview {
+  left: 0;
+  top: 0;
+  position: fixed;
+  width: 25%;
+  height: 73.5%;
+}
 
+.Vis {
+  position: fixed;
+  top: 0;
+  left: 25%;
+  width: 75%;
+  height: 73.5%;
+}
 
- }
-
-.Spacial-Overview { grid-area: Spacial-Overview;
- }
-
-.Vis { grid-area: Vis;
- }
-
-
+.Time-Overview {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 25%;
+}
 </style>
