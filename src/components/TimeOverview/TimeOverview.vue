@@ -19,23 +19,11 @@ export default {
     );
     
   },
-  computed: {
-    count() {
-      return global.state.count
-    },
-  },
   watch: {
     'global.state.count':{
       handler: function() {
         console.log(NeuronStore.state.populations[global.state.count][0][3]);
         console.log(NeuronStore.state.populations[global.state.count][1][3]);
-        // for(let i = 0,i <= 1000,i++){
-        //   for(let j = 0, j < NeuronStore.state.populations[global.state.count].length; j++){
-        //     if(i=== NeuronStore.state.populations[global.state.count][j][2]){
-        //       this.spikeCount[global.state.count][i] += NeuronStore.state.populations[global.state.count][j][3] 
-        //     }
-        //   }
-        // }
         this.chart.layout.datarevision = new Date().getTime();
         for(let i= 0;i < NeuronStore.state.populations[global.state.count].length; i++){
         this.chart.traces[global.state.count].x.push(NeuronStore.state.populations[global.state.count][i][2]);
@@ -65,7 +53,6 @@ export default {
 
   data() {
     return {
-      spikeCount:[],
       chart: {
         uuid: "123",
         traces: [
@@ -79,8 +66,7 @@ export default {
         layout: {
           title: "Time Overview",
           xaxis: {
-            title: "Time",
-            range: [0,1000]
+            title: "Time m/s",
           },
           yaxis: {
             title: "Spike Count",

@@ -3,7 +3,7 @@
 const NeuronStore = {
   state: {
     populations: [],
-    currentTime: 1000,
+    currentTime: 500,
     count: 0,
   },
   addPopulation(name) {
