@@ -73,12 +73,14 @@ export default {
             x: [],
             y: [],
             type: "histogram",
+            hisfunc: "sum"
           },
         ],
         layout: {
           title: "Time Overview",
           xaxis: {
             title: "Time",
+            range: [0,1000]
           },
           yaxis: {
             title: "Spike Count",
