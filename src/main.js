@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import global from "./store/global";
 
-const app = createApp(App);
-
-app.mount("#app");
+createApp(App).provide("global", global).mount("#app");

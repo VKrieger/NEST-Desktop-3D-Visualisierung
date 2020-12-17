@@ -1,3 +1,5 @@
+
+
 const NeuronStore = {
   state: {
     populations: [],
@@ -13,6 +15,12 @@ const NeuronStore = {
   getTime() {
     return this.state.currentTime;
   },
+  getCount() {
+    return this.state.count;
+  },
+  incrementCount(){
+    this.state.count = this.state.count + 1;
+  }
 };
 
 export default NeuronStore;

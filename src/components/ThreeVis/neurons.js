@@ -4,14 +4,28 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import NeuronStore from "../../store/NeuronStore.js";
 
 const colors = [
-  0xf500f5,
-  0x0d0bf5,
-  0xe01200,
-  0x00f535,
-  0x15cfe0,
-  0xf56f09,
-  0xe0ad0a,
-  0xe0768b,
+  0x114477,
+  0x77AADD,
+  0x117744,
+  0x88CCAA,
+  0x774411,
+  0xDDAA77,
+  0x771155,
+  0xCC99BB,
+  0x696969
+  // # population colors
+  // 'pop_colors': np.array(['#114477', # L23E blue
+  //                                     '#77AADD', # L23I
+  //                                     '#117744',  # L4E green
+  //                                     '#88CCAA', # L4I
+  //                                     '#774411',  # L5E brown
+  //                                     '#DDAA77',  # L5I
+  //                                     '#771155',  # L6E pompadour
+  //                                     '#CC99BB',  # L6I
+  //                                     '#696969']), # TC  dimgrey
+  
+
+
 ];
 
 let container,

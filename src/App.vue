@@ -30,7 +30,7 @@ export default {
   top: 0;
   position: fixed;
   width: 25%;
-  height: 73.5%;
+  height: 66%;
 }
 
 .Vis {
@@ -38,14 +38,14 @@ export default {
   top: 0;
   left: 25%;
   width: 75%;
-  height: 73.5%;
+  height: 66%;
 }
 
 .Time-Overview {
   position: fixed;
-  bottom: 0;
+  bottom: -1.5%;
   left: 0;
   width: 100%;
-  height: 25%;
+  height: 35%;
 }
 </style>

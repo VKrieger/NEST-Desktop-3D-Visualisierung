@@ -5,16 +5,22 @@
 <script>
 import neurons from "./neurons.js";
 import NeuronStore from "@/store/NeuronStore.js";
+// import {inject} from "vue";
+
 
 export default {
+  inject: ["global"],
   data() {
     return {
       NeuronStore,
       time: NeuronStore.getTime(),
+      lengthP: NeuronStore.state.populations.length
+
     };
   },
   created() {
     window.addEventListener("resize", neurons.onWindowResize, false);
+
   },
   methods: {
     // File input
@@ -50,7 +56,9 @@ export default {
         let count = parseFloat(d[3]);
         if (isNaN(x) || isNaN(y)) return;
         data.push([x, y, time, count]);
+  
       }
+      NeuronStore.addPopulation(data);
       const x = 40,
         y = 40;
       const population = neurons.createPopulation(x, y);
@@ -66,6 +74,8 @@ export default {
           neuron.userData.count.push(d[3]);
         }
       });
+          global.increment();
+          console.log(NeuronStore.state.populations.length);
     },
 
     addFile(e) {
@@ -76,7 +86,7 @@ export default {
   mounted() {
     neurons.init("three");
     neurons.animate();
-    setInterval(() => NeuronStore.changeTime(), 100);
+    setInterval(() =>NeuronStore.changeTime(), 100);
   },
 };
 </script>
