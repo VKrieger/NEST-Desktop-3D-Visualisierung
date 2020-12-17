@@ -1,4 +1,4 @@
-import { reactive, readonly } from "vue";
+import { reactive} from "vue";
 
 const state = reactive({
   count: -1,
@@ -8,4 +8,4 @@ const increment = function() {
     this.state.count++;
 }
 
-export default { state: readonly(state), increment };
+export default { state, increment };

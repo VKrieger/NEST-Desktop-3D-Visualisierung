@@ -5,6 +5,7 @@
 <script>
 import neurons from "./neurons.js";
 import NeuronStore from "@/store/NeuronStore.js";
+import global from "@/store/global.js";
 // import {inject} from "vue";
 
 
@@ -75,7 +76,7 @@ export default {
         }
       });
           global.increment();
-          console.log(NeuronStore.state.populations.length);
+          console.log(NeuronStore.state.populations[0][0][2], global.state.count);
     },
 
     addFile(e) {

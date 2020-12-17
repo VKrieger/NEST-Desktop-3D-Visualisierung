@@ -5,6 +5,7 @@
 <script>
 import Plotly from "plotly.js-dist";
 import NeuronStore from "@/store/NeuronStore.js";
+import global from "@/store/global.js";
 // import {inject} from "vue";
 
 export default {
@@ -16,9 +17,33 @@ export default {
       this.chart.layout,
       this.chart.config
     );
-    this.addData()
+    
+  },
+  computed: {
+    count() {
+      return global.state.count
+    },
   },
   watch: {
+    'global.state.count':{
+      handler: function() {
+        console.log(NeuronStore.state.populations[global.state.count][0][3]);
+        console.log(NeuronStore.state.populations[global.state.count][1][3]);
+        // for(let i = 0,i <= 1000,i++){
+        //   for(let j = 0, j < NeuronStore.state.populations[global.state.count].length; j++){
+        //     if(i=== NeuronStore.state.populations[global.state.count][j][2]){
+        //       this.spikeCount[global.state.count][i] += NeuronStore.state.populations[global.state.count][j][3] 
+        //     }
+        //   }
+        // }
+        this.chart.layout.datarevision = new Date().getTime();
+        for(let i= 0;i < NeuronStore.state.populations[global.state.count].length; i++){
+        this.chart.traces[global.state.count].x.push(NeuronStore.state.populations[global.state.count][i][2]);
+        this.chart.traces[global.state.count].y.push(NeuronStore.state.populations[global.state.count][i][3]);
+        }
+      },
+      deep: true,
+    },
     chart: {
       handler: function() {
         Plotly.react(
@@ -30,18 +55,17 @@ export default {
       deep: true,
     },
   },
-  methods: {
-    addData: function() {
-      if(global.state.count >= 0){
-      this.chart.layout.datarevision = new Date().getTime();
-      this.chart.traces[0].x.push(NeuronStore.state.populations[0].time);
-      this.chart.traces[0].y.push(NeuronStore.state.populations[0].count);
-      }
-    },
-  },
+  // methods: {
+  //   addData: function() {
+  //     if(global.state.count >= 0){
+  //     this.chart.layout.datarevision = new Date().getTime();
+  //     this.chart.traces[0].y.push(NeuronStore.state.populations[0]);
+  //     }
+  //   },
+
   data() {
-   
     return {
+      spikeCount:[],
       chart: {
         uuid: "123",
         traces: [
