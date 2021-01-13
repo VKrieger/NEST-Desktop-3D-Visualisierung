@@ -17,21 +17,8 @@ export default {
       this.chart.layout,
       this.chart.config
     );
-    
   },
   watch: {
-    'global.state.count':{
-      handler: function() {
-        console.log(NeuronStore.state.populations[global.state.count][0][3]);
-        console.log(NeuronStore.state.populations[global.state.count][1][3]);
-        this.chart.layout.datarevision = new Date().getTime();
-        for(let i= 0;i < NeuronStore.state.populations[global.state.count].length; i++){
-        this.chart.traces[global.state.count].x.push(NeuronStore.state.populations[global.state.count][i][2]);
-        this.chart.traces[global.state.count].y.push(NeuronStore.state.populations[global.state.count][i][3]);
-        }
-      },
-      deep: true,
-    },
     chart: {
       handler: function() {
         Plotly.react(
@@ -42,14 +29,34 @@ export default {
       },
       deep: true,
     },
+    "global.state.count": {
+      handler: function() {
+        console.log(NeuronStore.state.populations[global.state.count][0][3]);
+        console.log(NeuronStore.state.populations[global.state.count][1][3]);
+        console.log(global.state.count);
+        this.chart.layout.datarevision = global.state.count;
+        for (
+          let i = 0;
+          i < NeuronStore.state.populations[global.state.count].length;
+          i++
+        ) {
+          this.chart.traces[global.state.count].x.push(
+            NeuronStore.state.populations[global.state.count][i][2]
+          );
+          this.chart.traces[global.state.count].y.push(
+            NeuronStore.state.populations[global.state.count][i][3]
+          );
+        }
+        Plotly.addTraces(this.$refs[this.chart.uuid], {
+          x: [],
+          y: [],
+          type: "histogram",
+          hisfunc: "sum",
+        });
+      },
+      deep: true,
+    },
   },
-  // methods: {
-  //   addData: function() {
-  //     if(global.state.count >= 0){
-  //     this.chart.layout.datarevision = new Date().getTime();
-  //     this.chart.traces[0].y.push(NeuronStore.state.populations[0]);
-  //     }
-  //   },
 
   data() {
     return {
@@ -60,7 +67,7 @@ export default {
             x: [],
             y: [],
             type: "histogram",
-            hisfunc: "sum"
+            hisfunc: "sum",
           },
         ],
         layout: {
