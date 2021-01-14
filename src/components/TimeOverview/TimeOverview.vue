@@ -11,24 +11,14 @@ import global from "@/store/global.js";
 export default {
   inject: ["global"],
   mounted() {
-    Plotly.plot(
-      this.$refs[this.chart.uuid],
-      this.chart.traces,
-      this.chart.layout,
-      this.chart.config
-    );
+      Plotly.plot(
+        this.$refs[this.chart.uuid],
+        this.chart.traces,
+        this.chart.layout,
+        this.chart.config
+      );
   },
   watch: {
-    chart: {
-      handler: function() {
-        Plotly.react(
-          this.$refs[this.chart.uuid],
-          this.chart.traces,
-          this.chart.layout
-        );
-      },
-      deep: true,
-    },
     "global.state.count": {
       handler: function() {
         console.log(NeuronStore.state.populations[global.state.count][0][3]);
@@ -56,8 +46,18 @@ export default {
       },
       deep: true,
     },
+    // chart: {
+    //   handler: function() {
+    //     Plotly.react(
+    //       this.$refs[this.chart.uuid],
+    //       this.chart.traces,
+    //       this.chart.layout
+    //     );
+    //   },
+    //   deep: true,
+    // },
   },
-
+  
   data() {
     return {
       chart: {
@@ -73,13 +73,16 @@ export default {
         layout: {
           title: "Time Overview",
           xaxis: {
-            title: "Time m/s",
+            title: "Time ms",
+            rangemode: "tozero",
+            range: [0, 10000],
           },
           yaxis: {
             title: "Spike Count",
           },
           barmode: "group",
           bargap: 0.008,
+          showlegend: true,
         },
         config: {
           responsive: true,
