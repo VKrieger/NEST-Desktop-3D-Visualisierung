@@ -76,7 +76,7 @@ export default {
         }
       });
           global.increment();
-          console.log(NeuronStore.state.populations[0][0][2], global.state.count);
+          // console.log(NeuronStore.state.populations[0][0][2], global.state.count);
     },
 
     addFile(e) {

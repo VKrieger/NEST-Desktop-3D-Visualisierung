@@ -1,6 +1,6 @@
 <template>
   <section class="component">
-    <h2>Spacial Overview</h2>
+    <p>Spacial Overview</p>
     <group-options></group-options>
     <heat-map></heat-map>
   </section>
@@ -21,5 +21,6 @@ export default {
 <style scoped>
 .component {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

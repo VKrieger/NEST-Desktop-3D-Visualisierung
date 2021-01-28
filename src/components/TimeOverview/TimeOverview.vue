@@ -21,9 +21,9 @@ export default {
   watch: {
     "global.state.count": {
       handler: function() {
-        console.log(NeuronStore.state.populations[global.state.count][0][3]);
-        console.log(NeuronStore.state.populations[global.state.count][1][3]);
-        console.log(global.state.count);
+        // console.log(NeuronStore.state.populations[global.state.count][0][3]);
+        // console.log(NeuronStore.state.populations[global.state.count][1][3]);
+        // console.log(global.state.count);
         this.chart.layout.datarevision = global.state.count;
         for (
           let i = 0;
@@ -44,7 +44,7 @@ export default {
           hisfunc: "sum",
         });
       },
-      deep: true,
+      // deep: true,
     },
     // chart: {
     //   handler: function() {
@@ -80,7 +80,7 @@ export default {
           yaxis: {
             title: "Spike Count",
           },
-          barmode: "group",
+          barmode: "stack",
           bargap: 0.008,
           showlegend: true,
         },
