@@ -4,15 +4,28 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import NeuronStore from "../../store/NeuronStore.js";
 
 const colors = [
-  0x114477,
-  0x77AADD,
-  0x117744,
-  0x88CCAA,
-  0x774411,
-  0xDDAA77,
-  0x771155,
-  0xCC99BB,
-  0x696969
+  0x1f77b4,  // muted blue
+  0xff7f0e,  // safety orange
+  0x2ca02c,  // cooked asparagus green
+  0xd62728,  // brick red
+  0x9467bd,  // muted purple
+  0x8c564b,  // chestnut brown
+  0xe377c2,  // raspberry yogurt pink
+  0x7f7f7f,  // middle gray
+  0xbcbd22,  // curry yellow-green
+  0x17becf   // blue-teal
+
+
+
+  // 0x114477,
+  // 0x77AADD,
+  // 0x117744,
+  // 0x88CCAA,
+  // 0x774411,
+  // 0xDDAA77,
+  // 0x771155,
+  // 0xCC99BB,
+  // 0x696969
   // # population colors
   // 'pop_colors': np.array(['#114477', # L23E blue
   //                                     '#77AADD', # L23I
@@ -34,7 +47,7 @@ let container,
   delta = 0;
 let scene, camera, renderer;
 let populations;
-let renderedTime = 0;
+
 
 const fps = 30; // frames per seconds
 
@@ -99,7 +112,7 @@ function animate() {
 
 function render() {
   const t = NeuronStore.state.currentTime;
-  if (renderedTime != t) {
+
     populations.children.forEach((population) => {
       population.children.forEach((neuron) => {
         neuron.visible = neuron.userData.times.includes(t);
@@ -111,8 +124,7 @@ function render() {
         }
       });
     });
-    renderedTime = t;
-  }
+
   renderer.render(scene, camera);
 }
 // Create Neuron Forms //

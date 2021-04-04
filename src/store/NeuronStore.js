@@ -1,16 +1,19 @@
 
+import { reactive} from "vue";
 
 const NeuronStore = {
-  state: {
+  state: reactive({
     populations: [],
-    currentTime: 300,
+    name:[],
+    currentTime: 0,
     count: 0,
-  },
+    maxTime: 6
+  }),
   addPopulation(name) {
     this.state.populations.push(name);
   },
-  changeTime() {
-    this.state.currentTime = (this.state.currentTime + 1) % 1000;
+  changeTime(value) {
+    this.state.currentTime = (value ) % 1000;
   },
   getTime() {
     return this.state.currentTime;
@@ -20,6 +23,11 @@ const NeuronStore = {
   },
   incrementCount(){
     this.state.count = this.state.count + 1;
+  },
+  changeMaxTime(value) {
+    if(this.state.maxTime < value){
+      this.state.maxTime = Math.round(value);
+    }
   }
 };
 

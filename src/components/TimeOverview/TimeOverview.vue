@@ -6,7 +6,7 @@
 import Plotly from "plotly.js-dist";
 import NeuronStore from "@/store/NeuronStore.js";
 import global from "@/store/global.js";
-// import {inject} from "vue";
+
 
 export default {
   inject: ["global"],
@@ -21,15 +21,16 @@ export default {
   watch: {
     "global.state.count": {
       handler: function() {
-        // console.log(NeuronStore.state.populations[global.state.count][0][3]);
-        // console.log(NeuronStore.state.populations[global.state.count][1][3]);
-        // console.log(global.state.count);
+
         this.chart.layout.datarevision = global.state.count;
         for (
           let i = 0;
           i < NeuronStore.state.populations[global.state.count].length;
           i++
         ) {
+          this.chart.traces[global.state.count].name =
+            NeuronStore.state.name[global.state.count]
+          ;
           this.chart.traces[global.state.count].x.push(
             NeuronStore.state.populations[global.state.count][i][2]
           );
@@ -37,25 +38,21 @@ export default {
             NeuronStore.state.populations[global.state.count][i][3]
           );
         }
+
+
+
         Plotly.addTraces(this.$refs[this.chart.uuid], {
           x: [],
           y: [],
           type: "histogram",
           hisfunc: "sum",
         });
+        console.log(this.chart.layout.xaxis.range[1]);
+        NeuronStore.changeMaxTime(this.chart.layout.xaxis.range[1])
+        console.log(NeuronStore.state.maxTime);
       },
-      // deep: true,
     },
-    // chart: {
-    //   handler: function() {
-    //     Plotly.react(
-    //       this.$refs[this.chart.uuid],
-    //       this.chart.traces,
-    //       this.chart.layout
-    //     );
-    //   },
-    //   deep: true,
-    // },
+
   },
   
   data() {
@@ -75,13 +72,12 @@ export default {
           xaxis: {
             title: "Time ms",
             rangemode: "tozero",
-            range: [0, 10000],
           },
           yaxis: {
             title: "Spike Count",
           },
           barmode: "stack",
-          bargap: 0.008,
+          bargap: 0,
           showlegend: true,
         },
         config: {

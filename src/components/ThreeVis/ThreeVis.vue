@@ -8,20 +8,17 @@ import NeuronStore from "@/store/NeuronStore.js";
 import global from "@/store/global.js";
 // import {inject} from "vue";
 
-
 export default {
   inject: ["global"],
   data() {
     return {
       NeuronStore,
       time: NeuronStore.getTime(),
-      lengthP: NeuronStore.state.populations.length
-
+      lengthP: NeuronStore.state.populations.length,
     };
   },
   created() {
     window.addEventListener("resize", neurons.onWindowResize, false);
-
   },
   methods: {
     // File input
@@ -38,6 +35,7 @@ export default {
     getAsText(fileToRead) {
       let reader = new FileReader();
       reader.readAsText(fileToRead);
+      NeuronStore.state.name.push(fileToRead.name.slice(0,-4));
       reader.onload = this.loadHandler;
     },
 
@@ -57,8 +55,8 @@ export default {
         let count = parseFloat(d[3]);
         if (isNaN(x) || isNaN(y)) return;
         data.push([x, y, time, count]);
-  
       }
+    
       NeuronStore.addPopulation(data);
       const x = 40,
         y = 40;
@@ -69,14 +67,18 @@ export default {
       });
       data.map((d) => {
         const neuronIdx = pos.indexOf(`${d[0]},${d[1]}`);
+
         if (neuronIdx != -1 && neuronIdx < population.children.length) {
-          const neuron = population.children[neuronIdx];
+                const neuron = population.children[neuronIdx];
           neuron.userData.times.push(d[2]);
           neuron.userData.count.push(d[3]);
         }
+
+        
       });
-          global.increment();
-          // console.log(NeuronStore.state.populations[0][0][2], global.state.count);
+
+      global.increment();
+      // console.log(NeuronStore.state.populations[0][0][2], global.state.count);
     },
 
     addFile(e) {
@@ -87,7 +89,7 @@ export default {
   mounted() {
     neurons.init("three");
     neurons.animate();
-    setInterval(() =>NeuronStore.changeTime(), 100);
+    // setInterval(() =>NeuronStore.changeTime(), 100);
   },
 };
 </script>
