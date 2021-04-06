@@ -9,8 +9,8 @@ const NeuronStore = {
     count: 0,
     maxTime: 6
   }),
-  addPopulation(name) {
-    this.state.populations.push(name);
+  addPopulation(data) {
+    this.state.populations.push(data);
   },
   changeTime(value) {
     this.state.currentTime = (value ) % 1000;

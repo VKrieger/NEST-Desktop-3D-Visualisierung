@@ -1,9 +1,11 @@
 <template>
   <div class="grid-container">
-    <spacial-overview class="Spacial-Overview"></spacial-overview>
     <three-vis class="Vis"></three-vis>
+  
+
     <time-overview class="Time-Overview"></time-overview>
     <time-slider class="Time-Slider"></time-slider>
+      <spacial-overview class="Spacial-Overview"></spacial-overview>
   </div>
 </template>
 
@@ -18,27 +20,18 @@ export default {
     SpacialOverview,
     TimeOverview,
     ThreeVis,
-    TimeSlider
+    TimeSlider,
   },
 };
 </script>
 
 <style>
-
 * {
   border-radius: 5px;
 }
 
 .grid-container {
   box-sizing: border-box;
-}
-
-.Spacial-Overview {
-  left: 0;
-  top: 0;
-  position: fixed;
-  width: 25%;
-  height: 60%;
 }
 
 .Vis {
@@ -56,8 +49,6 @@ export default {
   left: 0;
   width: 100%;
   height: 30%;
-
-
 }
 
 .Time-Slider {
@@ -65,7 +56,18 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
+}
 
+.Spacial-Overview {
+  left: 0;
+  top: 0;
+  position: fixed;
+  width: 25%;
+  height: 60%;
+  overflow: scroll;
+}
 
+.Spacial-Overview::-webkit-scrollbar {
+  display: none;
 }
 </style>
