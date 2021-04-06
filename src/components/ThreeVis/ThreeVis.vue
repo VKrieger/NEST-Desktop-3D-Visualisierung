@@ -1,5 +1,6 @@
 <template>
   <section id="three" @drop.prevent="addFile" @dragover.prevent></section>
+
 </template>
 
 <script>

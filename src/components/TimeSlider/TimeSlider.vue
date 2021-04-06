@@ -2,7 +2,7 @@
   <section>
     <div class="range">
       <div class="sliderValue">
-        <span>{{ value }}</span>
+        <span>{{ value }} ms</span>
       </div>
       <div class="field">
         <input

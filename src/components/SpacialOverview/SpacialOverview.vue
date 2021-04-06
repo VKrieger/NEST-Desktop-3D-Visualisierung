@@ -23,7 +23,6 @@ export default {
       return NeuronStore.state.name;
     },
   },
-
 };
 </script>
 

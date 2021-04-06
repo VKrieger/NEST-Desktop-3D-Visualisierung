@@ -4,18 +4,16 @@ import Stats from "three/examples/jsm/libs/stats.module";
 import NeuronStore from "@/store/NeuronStore.js";
 
 const colors = [
-  0x1f77b4,  // muted blue
-  0xff7f0e,  // safety orange
-  0x2ca02c,  // cooked asparagus green
-  0xd62728,  // brick red
-  0x9467bd,  // muted purple
-  0x8c564b,  // chestnut brown
-  0xe377c2,  // raspberry yogurt pink
-  0x7f7f7f,  // middle gray
-  0xbcbd22,  // curry yellow-green
-  0x17becf   // blue-teal
-
-
+  0x1f77b4, // muted blue
+  0xff7f0e, // safety orange
+  0x2ca02c, // cooked asparagus green
+  0xd62728, // brick red
+  0x9467bd, // muted purple
+  0x8c564b, // chestnut brown
+  0xe377c2, // raspberry yogurt pink
+  0x7f7f7f, // middle gray
+  0xbcbd22, // curry yellow-green
+  0x17becf, // blue-teal
 
   // 0x114477,
   // 0x77AADD,
@@ -26,7 +24,6 @@ const colors = [
   // 0x771155,
   // 0xCC99BB,
   // 0x696969
-
 ];
 
 let container,
@@ -34,9 +31,7 @@ let container,
   clock,
   delta = 0;
 let scene, camera, renderer;
-let scene2, camera2, renderer2;
 let populations;
-
 
 const fps = 30; // frames per seconds
 
@@ -102,17 +97,16 @@ function animate() {
 function render() {
   const t = NeuronStore.state.currentTime;
 
-    populations.children.forEach((population) => {
-      population.children.forEach((neuron) => {
-        neuron.visible = neuron.userData.times.includes(t);
-        if (neuron.visible) {
-          const y =
-            neuron.userData.count[neuron.userData.times.indexOf(t)] / 300;
-          neuron.scale.y = y;
-          neuron.position.y = neuron.scale.y / 2;
-        }
-      });
+  populations.children.forEach((population) => {
+    population.children.forEach((neuron) => {
+      neuron.visible = neuron.userData.times.includes(t);
+      if (neuron.visible) {
+        const y = neuron.userData.count[neuron.userData.times.indexOf(t)] / 300;
+        neuron.scale.y = y;
+        neuron.position.y = neuron.scale.y / 2;
+      }
     });
+  });
 
   renderer.render(scene, camera);
 }
@@ -175,57 +169,11 @@ function onWindowResize() {
   render();
 }
 
-
-
-function initH(containerId) {
-
-  container = document.getElementById(containerId);
-
-  camera2 = new THREE.PerspectiveCamera(
-    100,
-    container.clientWidth / (container.clientHeight - 20),
-    0.1,
-    1000
-  );
-  camera2.position.set(0, 10, 0);
-
-
-  scene2 = new THREE.Scene();
-  scene2.background = new THREE.Color();
-
-  
-  scene2.add(scene.children[1].clone());
-
-  /////////////////////////////
-
-  const ambientLight = new THREE.AmbientLight();
-  scene2.add(ambientLight);
-
-  renderer2 = new THREE.WebGLRenderer({ antialias: true });
-  renderer2.setSize(container.clientWidth, (container.clientHeight-20));
-  container.appendChild(renderer.domElement);
-
-}
-
-function animate2() {
-requestAnimationFrame(animate);
-
-  const interval = 1 / fps;
-  delta += clock.getDelta();
-  if (delta > interval) {
-    stats.begin();
-    renderer2.render(scene2, camera2);
-    stats.end();
-    delta = delta % interval;
-  }
-}
-
-
 export default {
   init,
-  initH,
+
   animate,
-  animate2,
+
   createPopulation,
   onWindowResize,
 };
