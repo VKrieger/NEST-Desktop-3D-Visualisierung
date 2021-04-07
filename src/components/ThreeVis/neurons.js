@@ -32,6 +32,7 @@ let container,
   delta = 0;
 let scene, camera, renderer;
 let populations;
+let scenes = [];
 
 const fps = 30; // frames per seconds
 
@@ -107,7 +108,6 @@ function render() {
       }
     });
   });
-
   renderer.render(scene, camera);
 }
 // Create Neuron Forms //
@@ -139,7 +139,7 @@ function createPopulation(x, y) {
       pop.userData = { popIdx };
     }
   }
-
+if(!NeuronStore.state.merge) {
   if (popIdx > 0) {
     if (popIdx === 1) {
       scene.add(scene.children[1].clone().translateZ(popIdx * -(2 * y + 10)));
@@ -158,6 +158,9 @@ function createPopulation(x, y) {
       pop.translateX(popIdx * (x + 5));
     }
   }
+}
+
+  scenes.push(scene);
   populations.add(pop);
   return pop;
 }

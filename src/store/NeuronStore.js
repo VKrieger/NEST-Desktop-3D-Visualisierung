@@ -7,13 +7,17 @@ const NeuronStore = {
     name:[],
     currentTime: 0,
     count: 0,
-    maxTime: 6
+    maxTime: 6,
+    merge: false
   }),
   addPopulation(data) {
     this.state.populations.push(data);
   },
   changeTime(value) {
     this.state.currentTime = (value ) % 1000;
+  },
+  changeMerge(){
+    this.state.merge = !this.state.merge
   },
   getTime() {
     return this.state.currentTime;

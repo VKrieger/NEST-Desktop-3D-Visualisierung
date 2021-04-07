@@ -2,10 +2,14 @@
   <section>
     <div class="range">
       <div class="sliderValue">
-        <span>{{ value }} ms</span>
+        <span>{{ value }} ms </span>
+        <span><button id="play" @click="increment">play</button></span>
+        <span><button id="pause" @click="stop" >pause</button></span>
+        <span><button @click="changeMerge">{{status}}</button></span>
       </div>
       <div class="field">
         <input
+          id="slider"
           type="range"
           min="0"
           :max="maxValue"
@@ -21,21 +25,44 @@
 <script>
 import NeuronStore from "@/store/NeuronStore.js";
 
-
 export default {
   data() {
     return {
       value: 0,
+      interval: null,
     };
   },
   computed: {
     maxValue: function() {
       return NeuronStore.state.maxTime;
+    },
+    status: function() {
+      if(NeuronStore.state.merge) {
+        return "merged"
+      } else {
+        return "seperated"
+      }
     }
   },
   methods: {
     changeTime() {
       NeuronStore.changeTime(this.value);
+    },
+    changeMerge() {
+    
+      NeuronStore.changeMerge();
+    },
+    setSlider() {
+      const slider = document.getElementById("slider");
+ 
+      slider.stepUp();
+      slider.dispatchEvent(new Event("input"));
+    },
+    stop() {
+      clearInterval(this.interval);
+    },
+    increment() {
+      this.interval = setInterval(this.setSlider, 1000);
     },
   },
 };

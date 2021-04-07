@@ -1,5 +1,6 @@
 <template>
-  <section id="three" @drop.prevent="addFile" @dragover.prevent></section>
+  <section id="three" @drop.prevent="addFile" @dragover.prevent>
+  </section>
 
 </template>
 
@@ -103,6 +104,8 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
+
 
 #three {
   overflow: hidden;
