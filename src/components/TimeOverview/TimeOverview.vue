@@ -70,7 +70,7 @@ export default {
         layout: {
           title: "Time Overview",
           xaxis: {
-            title: "Time ms",
+            title: "Time t",
             rangemode: "tozero",
           },
           yaxis: {

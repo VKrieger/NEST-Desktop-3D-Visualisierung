@@ -2,7 +2,7 @@
   <section>
     <div class="range">
       <div class="sliderValue">
-        <span>{{ value }} ms </span>
+        <span>{{ value }} t </span>
         <span><button id="play" @click="increment">play</button></span>
         <span><button id="pause" @click="stop" >pause</button></span>
         <span><button @click="changeMerge">{{status}}</button></span>
@@ -40,7 +40,7 @@ export default {
       if(NeuronStore.state.merge) {
         return "merged"
       } else {
-        return "seperated"
+        return "separated"
       }
     }
   },
